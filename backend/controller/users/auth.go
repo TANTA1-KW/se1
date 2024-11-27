@@ -133,7 +133,6 @@ func SignUp(c *gin.Context) {
 func SignIn(c *gin.Context) {
 
    var payload Authen
-
    var user entity.Users
 
 
@@ -146,7 +145,6 @@ func SignIn(c *gin.Context) {
    }
 
    // ค้นหา user ด้วย Username ที่ผู้ใช้กรอกเข้ามา
-
    if err := config.DB().Raw("SELECT * FROM users WHERE email = ?", payload.Email).Scan(&user).Error; err != nil {
        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
        return
@@ -156,7 +154,7 @@ func SignIn(c *gin.Context) {
    err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
 
    if err != nil {
-       c.JSON(http.StatusBadRequest, gin.H{"error": "password is incerrect"})
+       c.JSON(http.StatusBadRequest, gin.H{"error": "password is incorrect"})
        return
 
    }
